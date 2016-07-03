@@ -1,11 +1,11 @@
 INSTALLATION
 ============
-   
+
 Requirements:
   bash gawk
 
-Recommended: 
-  rdiff-backup duplicity rsync gzip hwinfo sfdisk cryptsetup flashrom hwinfo
+Recommended:
+  rdiff-backup duplicity rsync borg gzip hwinfo sfdisk cryptsetup flashrom hwinfo
 
 Installation:
   To install backupninja, simply do the following:

@@ -20,6 +20,8 @@ etc/cron.d/backupninja
 etc/logrotate.d/backupninja
 examples/Makefile
 handlers/Makefile
+handlers/borg
+handlers/borg.helper
 handlers/dup
 handlers/dup.helper
 handlers/ldap

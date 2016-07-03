@@ -1,5 +1,7 @@
 version 1.0.2  -- UNRELEASED
     handler changes
+	borg:
+	 . Added initial support
 	dsync:
 	 . Miscellaneous improvements to this experimental handler.
 	dup:
