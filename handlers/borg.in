@@ -97,8 +97,8 @@ set +o noglob
 
 # include client-part and server-part
 execstr="${execstr} ${excludes} $execstr_repository::$execstr_archive ${includes}"
-
 debug "$execstr"
+
 if [ $test = 0 ]; then
    output=`nice -n $nicelevel su -c "$execstr" 2>&1`
    if [ $? = 0 ]; then
@@ -114,15 +114,17 @@ fi
 
 # borg prune
 prunestr="borg prune --keep-daily $keepdaily --keep-weekly $keepweekly --keep-monthly $keepmonthly $execstr_repository"
-
 debug "$prunestr"
-output="`su -c "$prunestr" 2>&1`"
-if [ $? = 0 ]; then
-   debug $output
-   info "Removing old backups succeeded."
-else
-   warning $output
-   warning "Failed removing old backups."
+
+if [ $test = 0 ]; then
+   output="`su -c "$prunestr" 2>&1`"
+   if [ $? = 0 ]; then
+      debug $output
+      info "Removing old backups succeeded."
+   else
+      warning $output
+      warning "Failed removing old backups."
+   fi
 fi
 
 return 0
