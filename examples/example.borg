@@ -6,8 +6,8 @@
 ## as the commented out option, uncomment and change when
 ## necessary. Options which are uncommented in this example do not have
 ## defaults, and the settings provided are recommended.
-## 
-## The defaults are useful in most cases, just make sure to configure the 
+##
+## The defaults are useful in most cases, just make sure to configure the
 ## destination host and user.
 ##
 
@@ -82,13 +82,15 @@ exclude = /var/lib/mysql
 ## put the backups under this directory, this must be set!
 ## an example setting would be:
 ## directory = /backups
-## 
+##
 ## Default:
 # directory =
 
 ## the machine which will receive the backups.
 ## an example setting would be:
 ## host = backuphost
+##
+## set host = localhost for local backups (no ssh)
 ##
 ## Default
 # host =

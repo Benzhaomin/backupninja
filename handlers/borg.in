@@ -4,6 +4,8 @@
 # borg handler script for backupninja
 # requires borgbackup
 #
+# TODO: encryption support
+#
 
 export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
 
@@ -32,7 +34,7 @@ getconf compression lz4
 
 # check the connection at the source and destination
 [ -n "$test" ] || test=0
-if [ "$testconnect" = "yes" ] || [ "${test}" -eq 1 ]; then
+if [ "$host" != "localhost" ] && ([ "$testconnect" = "yes" ] || [ "${test}" -eq 1 ]); then
    debug "ssh -o PasswordAuthentication=no $host -l $user 'echo -n 1'"
    local ret=`ssh -o PasswordAuthentication=no $host -l $user 'echo -n host is alive'`
    if echo $ret | grep "host is alive"; then
@@ -56,15 +58,17 @@ execstr_archive="$archive"
 # :TODO:maethor:160509: Manage encryption
 
 initstr="borg init --encryption=none $execstr_repository"
-
 debug "$initstr"
-output="`su -c "$initstr" 2>&1`"
-if [ $? = 2 ]; then
-   debug $output
-   info "Repository was already initialized"
-else
-   warning $output
-   warning "Repository has been initialized"
+
+if [ $test = 0 ]; then
+    output="`su -c "$initstr" 2>&1`"
+    if [ $? = 2 ]; then
+       debug $output
+       info "Repository was already initialized"
+    else
+       warning $output
+       warning "Repository has been initialized"
+    fi
 fi
 
 ### EXECUTE ###
