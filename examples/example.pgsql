@@ -17,6 +17,8 @@
 # compress = < yes | no > (default = yes)
 # if yes, compress the pg_dump/pg_dumpall output. 
 
+# exclude_tables = < list of tables to exclude > (no default)
+
 # format = < plain | tar | custom > (default = plain)
 # plain -  Output a plain-text SQL script file with the extension .sql.
 #          When dumping all databases, a single file is created via pg_dumpall.
