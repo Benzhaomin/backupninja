@@ -2,14 +2,14 @@
                                           |\_
                  B A C K U P N I N J A   /()/
                                          `\|
-                         
+
       a silent flower blossom death strike to lost data.
 
 Backupninja allows you to coordinate system backup by dropping a few
 simple configuration files into /etc/backup.d/. Most programs you
 might use for making backups don't have their own configuration file
 format. Backupninja provides a centralized way to configure and
-coordinate many different backup utilities. 
+coordinate many different backup utilities.
 
 Features:
  - easy to read ini style configuration files.
@@ -21,14 +21,14 @@ Features:
    backup action configuration files.
  - passwords are never sent via the command line to helper programs.
  - works with Linux-Vservers (http://linux-vserver.org/)
- 
+
 Backup types:
  - secure, remote, incremental filesytem backup (via rdiff-backup).
    incremental data is compressed. permissions are retained even
    with an unpriviledged backup user.
  - backup of mysql databases (via mysqlhotcopy and mysqldump).
  - basic system and hardware info
- - encrypted remote backups (via duplicity).    
+ - encrypted remote backups (via duplicity or borg).
  - backup of subversion repositories.
 
 The following options are available:
@@ -50,7 +50,7 @@ NINJAHELPER
 
 Ninjahelper is an additional script which will walk you through the process of
 configuring backupninja. Ninjahelper has a menu driven curses based interface
-(using dialog). 
+(using dialog).
 
 To add an additional 'wizard' to ninjahelper, follow these steps:
 
@@ -86,10 +86,11 @@ You can force a different general configuration file with "backupninja
 
 To preform the actual backup, backupninja processes each configuration
 file in /etc/backup.d according to the file's suffix:
- 
+
   .sh      --  run this file as a shell script.
   .rdiff   --  filesystem backup (using rdiff-backup)
   .dup     --  filesystem backup (using duplicity)
+  .borg    --  filesystem backup (using borg)
   .mysql   --  backup mysql databases
   .pgsql   --  backup PostgreSQL databases
   .sys     --  general hardware, partition, and system reports.
@@ -97,10 +98,10 @@ file in /etc/backup.d according to the file's suffix:
   .maildir --  incrementally backup maildirs (very specialized)
 
 Support for additional configuration types can be added by dropping
-bash scripts with the name of the suffix into /usr/share/backupninja. 
+bash scripts with the name of the suffix into /usr/share/backupninja.
 
 The configuration files are processed in alphabetical order. However,
-it is suggested that you name the config files in "sysvinit style." 
+it is suggested that you name the config files in "sysvinit style."
 
 For example:
 	00-disabled.pgsql
@@ -118,7 +119,7 @@ Unless otherwise specified, the config file format is "ini style."
 For example:
 
    # this is a comment
-   
+
    [fishes]
    fish = red
    fish = blue
@@ -161,7 +162,7 @@ These values for 'when' are equivalent:
   when = TUESDAYS at 05
 
 These values for 'when' are invalid:
-  
+
   when = tuesday at 2am
   when = tuesday at 2
   when = tues at 02
@@ -177,11 +178,11 @@ choose. It is intended, however, to be used like so:
     Typically, you cannot make a file backup of a database while it
     is in use, hence the need to use special tools to make a safe copy
     or export into /var/backups.
-     
+
 (2) Then, vital parts of the file system, including /var/backups, are
     nightly pushed to a remote, off-site, hard disk (using
     rdiff-backup). The local user is root, but the remote user is not
-    priviledged. Hopefully, the remote filesystem is encrypted. 
+    priviledged. Hopefully, the remote filesystem is encrypted.
 
 There are many different backup strategies out there, including "pull
 style", magnetic tape, rsync + hard links, etc. We believe that the
@@ -189,7 +190,7 @@ strategy outlined above is the way to go because: (1) hard disks are
 very cheap these days, (2) pull style backups are no good, because then
 the backup server must have root on the production server, and (3)
 rdiff-backup is more space efficient and featureful than using rsync +
-hard links. 
+hard links.
 
 
 SSH KEYS
@@ -225,14 +226,14 @@ VSERVERS
 ========
 
 If you are using Linux-Vservers (http://linux-vserver.org/) there are some
-special capabilities that different handlers have to make vserver 
+special capabilities that different handlers have to make vserver
 backups easier.
 
 Set the variable "vservers" to be "yes" in /etc/backupninja.conf and see the
 example configuration files for each handler to configure the vserver specific
 variables.
 
-Additional vserver variables that can be configured in /etc/backupninja.conf, 
+Additional vserver variables that can be configured in /etc/backupninja.conf,
 but they probably don't need to be changed:
 
 VSERVERINFO (default: /usr/sbin/vserver-info)
