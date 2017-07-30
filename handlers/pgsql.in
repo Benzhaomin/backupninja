@@ -8,7 +8,6 @@ getconf backupdir /var/backups/postgres
 getconf databases all
 getconf compress yes
 getconf vsname
-getconf exclude_tables
 # format maps to pg_dump --format= option, old/default was plain
 getconf format plain
 
@@ -184,14 +183,10 @@ else
       fi
       dumpcmd=""
       globalscmd=""
-      debug excluse_tables $exclude_tables
-      if [ "$exclude_tables" != ""  ]; then
-           exclude_flag="-T $exclude_tables"
-      fi 
       if [ "$compress" == "yes" ]; then
-         dumpcmd="set -o pipefail ; $PGSQLDUMP  $exclude_flag --format=$format ${disablecustomcompress} $db | $GZIP $GZIP_OPTS > '$backupdir/${db}.${dumpext}.gz'"
+         dumpcmd="set -o pipefail ; $PGSQLDUMP --format=$format ${disablecustomcompress} $db | $GZIP $GZIP_OPTS > '$backupdir/${db}.${dumpext}.gz'"
       else
-         dumpcmd="$PGSQLDUMP $exclude_flag --format=$format ${disablecustomcompress} $db > '$backupdir/${db}.${dumpext}'"
+         dumpcmd="$PGSQLDUMP --format=$format ${disablecustomcompress} $db > '$backupdir/${db}.${dumpext}'"
       fi
       if [ $usevserver = yes ]; then
          execstr="$VSERVER $vsname exec su - $PGSQLUSER -s /bin/bash -c \"$dumpcmd\""
