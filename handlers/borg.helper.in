@@ -230,7 +230,7 @@ do_borg_con() {
       return
    fi
 
-   if [ "$borg_host" != "localhost"]; then
+   if [ "$borg_host" != "localhost" ]; then
       do_borg_ssh_con
    else
       do_borg_local_dir

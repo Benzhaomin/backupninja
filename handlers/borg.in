@@ -65,7 +65,7 @@ execstr_archive="$archive"
 
 ### INIT IF NEEDED ###
 
-export BORG_PASSPHRASE='$passphrase'
+export BORG_PASSPHRASE="$passphrase"
 initstr="borg init --encryption=$encryption $execstr_repository"
 
 debug "$initstr"
