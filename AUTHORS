@@ -55,3 +55,4 @@ Christian Prause <cprause@suse.com> -- Support suse in the sys handler
 Jools Wills <jools@oxfordinspire.co.uk> -- Bugfix in the sys helper, indentation fixes
 Mark Janssen <mark@sig-io.nl> -- ignore jobs whose filename ends with "~"
 shred <riseup@ml.shredzone.de> -- Initial patch for test mode support in the rsync handler
+Daniel Lo Nigro <daniel@dan.cx> -- Dropbox support for Duplicity

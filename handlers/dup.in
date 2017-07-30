@@ -34,6 +34,9 @@ getconf awssecretaccesskey
 getconf cfusername
 getconf cfapikey
 getconf cfauthurl
+getconf dropboxappkey
+getconf dropboxappsecret
+getconf dropboxaccesstoken
 getconf ftp_password
 getconf sshoptions
 getconf bandwidthlimit 0
@@ -54,6 +57,16 @@ fi
 if [ "`echo $desturl | @AWK@ -F ':' '{print $1}'`" == "cf+http" ]; then
    [ -n "$cfusername" -a -n "$cfapikey" ]  || fatal "Cloudfiles access keys must be set for S3 backups."
 fi
+if [ "`echo $desturl | @AWK@ -F ':' '{print $1}'`" == "dpbx" ]; then
+   [ -n "$dropboxappkey" -a -n "$dropboxappsecret" ]  || fatal "Dropbox app ID and secret must be set for Dropbox backups."
+
+   if [ ! -n "$dropboxaccesstoken" ]; then
+      error "To obtain an access token for Dropbox, you will need to manually run this command:"
+      error "DPBX_APP_KEY=$dropboxappkey DPBX_APP_SECRET=$dropboxappsecret duplicity list-current-files $desturl"
+      fatal "Dropbox access token must be set"
+   fi
+fi
+
 if [ "`echo $desturl | @AWK@ -F ':' '{print $1}'`" == "ftp" ]; then
    [ -n "$ftp_password" ]  || fatal "ftp_password must be set for FTP backups."
 fi
@@ -277,6 +290,13 @@ if [ "`echo $desturl | @AWK@ -F ':' '{print $1}'`" == "cf+http" ]; then
    if [ -n "$cfauthurl" ]; then
       export CLOUDFILES_AUTHURL="$cfauthurl"
    fi
+fi
+
+### If desturl is a Dropbox URL, export the relevant environment variables
+if [ "`echo $desturl | @AWK@ -F ':' '{print $1}'`" == "dpbx" ]; then
+   export DPBX_APP_KEY="$dropboxappkey"
+   export DPBX_APP_SECRET="$dropboxappsecret"
+   export DPBX_ACCESS_TOKEN="$dropboxaccesstoken"
 fi
 
 ### Cleanup commands (duplicity >= 0.4.4)

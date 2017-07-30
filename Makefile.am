@@ -1,7 +1,7 @@
 # vi: noexpandtab softtabstop=0
 ## Process this file with automake to produce Makefile.in
 
-EXTRA_DIST = FAQ README COPYING AUTHORS INSTALL NEWS ChangeLog \
+EXTRA_DIST = FAQ.md README.md COPYING AUTHORS INSTALL.md NEWS ChangeLog \
              backupninja.spec backupninja.spec.in autogen.sh
 
 SUBDIRS = etc examples handlers lib man src

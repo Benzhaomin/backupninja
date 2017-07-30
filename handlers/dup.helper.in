@@ -470,6 +470,7 @@ keepincroffulls = $dup_keepincroffulls
 #desturl = rsync://user@other.host//var/backup/bla
 #desturl = s3+http://your_bucket
 #desturl = ftp://myftpuser@ftp.example.org/remote/ftp/path
+#desturl = dpbx:///myserver
 
 # Amazon Web Services Access Key ID and Secret Access Key, needed for backups
 # to S3 buckets.
@@ -485,6 +486,16 @@ keepincroffulls = $dup_keepincroffulls
 # cfusername = 
 # cfapikey = 
 # cfauthurl = 
+
+## Dropbox requires a valid authentication token. To obtain one, you will need
+## to create a Dropbox API application at https://www.dropbox.com/developers/apps/create.
+## See the "A note on Dropbox access" section of the Duplicity manpage for more
+## details: http://duplicity.nongnu.org/duplicity.1.html#sect12
+##
+## Default:
+# dropboxappkey =
+# dropboxappsecret =
+# dropboxaccesstoken =
 
 # FTP password, needed for backups using desturl = ftp://...
 #ftp_password = 

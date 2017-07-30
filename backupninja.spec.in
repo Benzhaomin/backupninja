@@ -50,7 +50,7 @@ rm -fr %{buildroot}
 
 %ghost %{_localstatedir}/log/backupninja.log
 
-%doc AUTHORS COPYING ChangeLog INSTALL NEWS README
+%doc AUTHORS COPYING ChangeLog INSTALL.md NEWS README.md
 %{_mandir}/man1/*
 %{_mandir}/man5/*
 

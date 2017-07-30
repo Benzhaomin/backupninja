@@ -189,6 +189,7 @@ exclude = /var/cache/backupninja/duplicity
 ## desturl = rsync://user@other.host//var/backup/bla
 ## desturl = s3+http://
 ## desturl = ftp://myftpuser@ftp.example.org/remote/ftp/path
+## desturl = dpbx:///myserver
 ## the default value of this configuration option is not set:
 ##
 ## Default:
@@ -212,6 +213,16 @@ exclude = /var/cache/backupninja/duplicity
 # cfusername = 
 # cfapikey = 
 # cfauthurl = 
+
+## Dropbox requires a valid authentication token. To obtain one, you will need
+## to create a Dropbox API application at https://www.dropbox.com/developers/apps/create.
+## See the "A note on Dropbox access" section of the Duplicity manpage for more
+## details: http://duplicity.nongnu.org/duplicity.1.html#sect12
+##
+## Default:
+# dropboxappkey =
+# dropboxappsecret =
+# dropboxaccesstoken =
 
 ## FTP password, needed for backups using desturl = ftp://...
 ##
