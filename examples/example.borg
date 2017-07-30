@@ -121,3 +121,27 @@ exclude = /var/lib/mysql
 ##
 ## Default:
 # compression = lz4
+
+## encryption mode to use for repository creation
+##
+## can be "none", "repokey" or "repofile"
+## - "none" = no encryption
+## - "repokey" = encryption with key stored inside the repository
+## - "repofile" = encryption with key stored in ~/.config/borg/keys/
+##
+## for more info see :
+## https://github.com/borgbackup/borg/blob/master/docs/quickstart.rst#repository-encryption
+##
+## Default:
+# encryption = none
+
+## passphrase of the key used for repository encryptions
+##
+## must be set if encryption != none
+## encryption is disabled by default
+##
+## for more info see :
+## https://github.com/borgbackup/borg/blob/master/docs/quickstart.rst#repository-encryption
+##
+## Default:
+# passphrase =

@@ -8,8 +8,6 @@
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# TODO: encryption support
-#
 
 HELPERS="$HELPERS borg:deduplicated_archive_based_backup"
 
@@ -81,7 +79,7 @@ do_borg_dest() {
 
    set -o noglob
    REPLY=
-   while [ -z "$REPLY" -o -z "$borg_directory" -o -z "$borg_host" -o -z "$borg_user" -o -z "$borg_archive" -o -z "$borg_compression" ]
+   while [ -z "$REPLY" -o -z "$borg_directory" -o -z "$borg_host" -o -z "$borg_user" -o -z "$borg_archive" -o -z "$borg_compression" -o -z "$borg_encryption" -o -z "$borg_passphrase" ]
    do
      formBegin "$borg_title - destination"
         formItem "directory" "$borg_directory"
@@ -89,6 +87,9 @@ do_borg_dest() {
         formItem "user" "$borg_user"
         formItem "archive_name" "$borg_archive"
         formItem "compression" "$borg_compression"
+        formItem "encryption" "$borg_encryption"
+        formItem "passphrase" "$borg_passphrase"
+
         formDisplay
      [ $? = 0 ] || return
      tmp_array=($REPLY)
@@ -97,6 +98,8 @@ do_borg_dest() {
      borg_user=${tmp_array[2]}
      borg_archive=${tmp_array[3]}
      borg_compression=${tmp_array[4]}
+     borg_encryption=${tmp_array[5]}
+     borg_passphrase=${tmp_array[6]}
   done
   set +o noglob
 
@@ -298,8 +301,10 @@ keepmonthly = $borg_keepmonthly
 directory = $borg_directory
 host = $borg_host
 user = $borg_user
-compression = $borg_compression
 archive = $borg_archive
+compression = $borg_compression
+encryption = $borg_encryption
+passphrase = $borg_passphrase
 EOF
 
    chmod 600 $next_filename
@@ -348,8 +353,10 @@ borg_wizard() {
    borg_directory=/backup/`hostname`
    borg_user=root
    borg_host=localhost
-   borg_compression=lz4
    borg_archive='{now:%Y-%m-%d}'
+   borg_compression=lz4
+   borg_encryption=none
+   borg_passphrase=
    borg_keepdaily=7
    borg_keepweekly=4
    borg_keepmonthly=-1

@@ -12,7 +12,6 @@
 # terms of the Do What The Fuck You Want To Public License, Version 2,
 # as published by Sam Hocevar. See the http://www.wtfpl.net/ file for more details.
 #
-# TODO: encryption support
 #
 
 export BORG_RELOCATED_REPO_ACCESS_IS_OK=yes
@@ -37,6 +36,9 @@ getconf directory
 directory=${directory%/}
 getconf archive {now:%Y-%m-%d}
 getconf compression lz4
+getconf encryption
+getconf passphrase
+
 
 ### CHECK CONFIG ###
 
@@ -63,9 +65,9 @@ execstr_archive="$archive"
 
 ### INIT IF NEEDED ###
 
-# :TODO:maethor:160509: Manage encryption
+export BORG_PASSPHRASE='$passphrase'
+initstr="borg init --encryption=$encryption $execstr_repository"
 
-initstr="borg init --encryption=none $execstr_repository"
 debug "$initstr"
 
 if [ $test = 0 ]; then
@@ -134,5 +136,7 @@ if [ $test = 0 ]; then
       warning "Failed removing old backups."
    fi
 fi
+
+unset BORG_PASSPHRASE
 
 return 0
