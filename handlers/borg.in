@@ -39,20 +39,9 @@ getconf compression lz4
 getconf encryption
 getconf passphrase
 
+export BORG_PASSPHRASE="$passphrase"
 
 ### CHECK CONFIG ###
-
-# check the connection at the source and destination
-[ -n "$test" ] || test=0
-if [ "$host" != "localhost" ] && ([ "$testconnect" = "yes" ] || [ "${test}" -eq 1 ]); then
-   debug "ssh -o PasswordAuthentication=no $host -l $user 'echo -n 1'"
-   local ret=`ssh -o PasswordAuthentication=no $host -l $user 'echo -n host is alive'`
-   if echo $ret | grep "host is alive"; then
-      debug "Connected to $host as $user successfully"
-   else
-      fatal "Can't connect to $host as $user."
-   fi
-fi
 
 # destination specific checks
 [ "$directory" != "" ] || fatal "Destination directory not set"
@@ -63,9 +52,31 @@ else
 fi
 execstr_archive="$archive"
 
+# check the connection at the source and destination
+[ -n "$test" ] || test=0
+if [ "$host" != "localhost" ] && ([ "$testconnect" = "yes" ] || [ "${test}" -eq 1 ]); then
+   debug "ssh -o PasswordAuthentication=no $host -l $user 'echo -n 1'"
+   local ret=`ssh -o PasswordAuthentication=no $host -l $user 'echo -n 1'`
+   if [ "$ret" = 1 ]; then
+      debug "Connected to $host as $user successfully"
+   else
+      teststr="borg list --show-rc -v $execstr_repository"
+      debug "$teststr"
+      output=`su -c "$teststr" 2>&1`
+      if echo "$output" | grep "terminating with success status" ; then
+         debug "Connected to $host as $user successfully (forced command)"
+      else
+         if echo "$output" | grep -E "Repository.+does not exist" ; then
+            debug "Connected to $host as $user successfully (forced command)"
+         else
+            fatal "Can't connect to $host as $user."
+         fi
+      fi
+   fi
+fi
+
 ### INIT IF NEEDED ###
 
-export BORG_PASSPHRASE="$passphrase"
 initstr="borg init --encryption=$encryption $execstr_repository"
 
 debug "$initstr"
