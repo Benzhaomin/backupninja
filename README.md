@@ -28,7 +28,7 @@ The key features of backupninja are:
 
 The following backup types are supported:
 
- - secure, remote, incremental filesytem backup (via rdiff-backup)
+ - secure, remote, incremental filesystem backup (via rdiff-backup)
    incremental data is compressed. permissions are retained even
    with an unpriviledged backup user
  - backup of mysql databases (via mysqlhotcopy and mysqldump)

@@ -6,7 +6,7 @@ you are working on it!
   http://bugs.debian.org/cgi-bin/pkgreport.cgi?which=pkg&data=backupninja&archive=no
 
 . Fix all bugs reported on our Gitlab instance:
-  https://0xacab.org/backupninja/backupninja/issues
+  https://0xacab.org/riseuplabs/backupninja/issues
 
 . Make ninjahelper allow you to pick what type of backup you want (instead
   of just assuming you want local-to-remote, or push backups. Some people

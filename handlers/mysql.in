@@ -238,14 +238,14 @@ then
    then
       if [ $usevserver = yes ]
       then
-         debug 'set -o pipefail ; echo show databases | $VSERVER $vsname exec su $user -c \"$MYSQL $defaultsfile\" | grep -v Database'
-         databases=`set -o pipefail ; echo 'show databases' | $VSERVER $vsname exec su $user -c "$MYSQL $defaultsfile" | grep -v Database`
+         debug 'set -o pipefail ; echo show databases | $VSERVER $vsname exec su $user -c \"$MYSQL $defaultsfile\" | grep -v Database | grep -v '"'"'^\(information\|performance\)_schema$'"'"
+         databases=`set -o pipefail ; echo 'show databases' | $VSERVER $vsname exec su $user -c "$MYSQL $defaultsfile" | grep -v Database | grep -v '^\(information\|performance\)_schema$'`
          if [ $? -ne 0 ]
          then
             fatal "Authentication problem, maybe user/password is wrong or mysqld is not running?"
          fi
       else
-         databases=$(set -o pipefail ; su $user -c "$MYSQL $defaultsfile -N -B -e 'show databases'" | sed 's/|//g;/\+----/d')
+         databases=$(set -o pipefail ; su $user -c "$MYSQL $defaultsfile -N -B -e 'show databases'" | sed 's/|//g;/\+----/d;/^\(information\|performance\)_schema$/d')
          if [ $? -ne 0 ]
          then
             fatal "Authentication problem, maybe user/password is wrong or mysqld is not running?"
@@ -256,15 +256,6 @@ then
    for db in $databases
    do
       DUMP_BASE="$MYSQLDUMP $defaultsfile $sqldumpoptions"
-
-      case "$db" in
-         information_schema)
-            DUMP_BASE="${DUMP_BASE} --skip-lock-tables"
-            ;;
-         performance_schema)
-            DUMP_BASE="${DUMP_BASE} --skip-lock-tables --skip-events"
-            ;;
-      esac
 
       # Dumping structure and data
       DUMP="$DUMP_BASE $ignore $db"

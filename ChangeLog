@@ -1,4 +1,9 @@
-version 1.0.2  -- UNRELEASED
+version 1.0.3 -- UNRELEASED
+
+    documentation changes
+	 · Fix typos in README.md and manpages. Thank you, Lintian!
+
+version 1.0.2 -- September 05, 2017
     handler changes
 	borg:
 	 . Added initial support
@@ -19,9 +24,12 @@ version 1.0.2  -- UNRELEASED
 	 · Run duplicity in a C locales environment (Closes: #736280).
 	   Thanks to Jonathan Dupart <jonathan@dupart.org> for the report,
 	   and the initial patch!
+	 . Fix handling of Dropbox access token (Closes: GitLab#11260).
 	mysql:
 	 . Make "nodata" option compatible with compress=no.
 	 . Fix non-qualified table name extraction. (Closes: Redmine#4373)
+	 . Skip dumping information and performance_schema databasase.
+	   (Closes: GitLab#11148)
 	rdiff:
 	 . Add option to include rdiff-backup output in reports.
 	   Thanks to David Gasaway <dave@gasaway.org> for the patch!
@@ -59,8 +67,20 @@ version 1.0.2  -- UNRELEASED
 	 . Indentation fixes, thanks to exobuzz. (Redmine#6726)
 	 . Ignore jobs whose filename ends with "~".
 	   Thanks to Mark Janssen <mark@sig-io.nl> for the patch.
+    build system changes
+	 · Pass the "foreign" option to AM_INIT_AUTOMAKE: README has been
+	   renamed to README.md.
     documentation changes
 	 . Update INSTALL file to add some missing recommended programs.
+	 . Document release process.
+	 . Merge FAQ content from the Redmine wiki into the one shipped
+	   with backupninja.
+	 . README.md: reorganize, reformat, and point to the examples
+	   configuration files.
+	 . INSTALL.md: recommend using packages on Debian and derivatives.
+	 . bandwidthlimit for the dup handler needs to be given in KB/s,
+	   and not (as wrongly advertised previously) in Kbit/s.
+	   (Closes: GitLab#7603)
 
 version 1.0.1 -- June 29, 2012
     handler changes
