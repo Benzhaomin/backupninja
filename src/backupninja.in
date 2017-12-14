@@ -215,25 +215,56 @@ function isnow() {
    whendayofweek=$1; at=$2; whentime=$3;
    whenday=`toint "$whendayofweek"`
    whendayofweek=`tolower "$whendayofweek"`
+   whentimeoriginal=$whentime
    whentime=`echo "$whentime" | @SED@ 's/:[0-9][0-9]$//' | @SED@ -r 's/^([0-9])$/0\1/'`
 
    if [ "$whendayofweek" == "everyday" -o "$whendayofweek" == "daily" ]; then
-      whendayofweek=$nowdayofweek
+       whendayofweek=$nowdayofweek
    fi
 
    if [ "$whenday" == "" ]; then
-      if [ "$whendayofweek" != "$nowdayofweek" ]; then
-         whendayofweek=${whendayofweek%s}
-         if [ "$whendayofweek" != "$nowdayofweek" ]; then
-            return 0
-         fi
-      fi
+       if [ "$whendayofweek" != "$nowdayofweek" ]; then
+           whendayofweek=${whendayofweek%s}
+           if [ "$whendayofweek" != "$nowdayofweek" ]; then
+               if [ "$whendayofweek" != "mondays" -a "$whendayofweek" != "tuesdays" -a "$whendayofweek" != "wednesdays" -a "$whendayofweek" != "thursdays" -a "$whendayofweek" != "fridays" -a "$whendayofweek" != "saturdays" -a "$whendayofweek" != "sundays" ]; then
+                   warning "The day in the 'when' option in the configuration is malformed. Please read the README for examples."
+               fi
+               if [ "$at" != "at" ]; then
+                   warning "The 'when' option in the configuration doesn't contain an 'at'. Please read the README for examples."
+               fi
+               if [[ "$whentimeoriginal" != @([0-9][0-9])?(:[0-9][0-9]) ]]; then
+                   warning "The time in the 'when' option in the configuration is malformed or does not exist. Please read the README for examples."
+	       fi
+               return 0
+           fi
+       fi
    elif [ "$whenday" != "$nowday" ]; then
-      return 0
+       if [ "$whenday" -lt 1 -o "$whenday" -gt 31 ]; then
+	   warning "The numeric value of the day in the 'when' option in the configuration does not match a day. Please read the README for examples."
+       fi
+       if [ -z "$whentime" ]; then
+           warning "The 'when' variable in the configuration file is malformed. You either didn't specify the day or the time. Please read the README for eamples."
+       fi
+       if [ "$at" != "at" ]; then
+           warning "The 'when' option in the configuration doesn't contain an 'at'. Please read the README for examples."
+       fi
+       return 0
+   elif [ -z "$whentime" ]; then
+       warning "The 'when' variable in the configuration file is malformed. You either didn't specify the day or the time. Please read the README for examples."
+       return 0
    fi
-
-   [ "$at" == "at" ] || return 0
-   [ "$whentime" == "$nowtime" ] || return 0
+   
+   if [ "$at" != "at" ]; then
+       warning "The 'when' option in the configuration doesn't contain an 'at'. Please read the README for examples."
+       return 0
+   fi
+   
+   if [[ "$whentimeoriginal" != @([0-9][0-9])?(:[0-9][0-9]) ]]; then
+       warning "The time in the 'when' option in the configuration is malformed. Please read the README for examples."
+       return 0
+   elif [ "$whentime" != "$nowtime" ]; then
+       return 0
+   fi
 
    return 1
 }
