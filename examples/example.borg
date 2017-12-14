@@ -60,9 +60,9 @@ include = /etc
 include = /root
 include = /home
 include = /usr/local
+include = /var
 
 ## files to exclude from the backup
-include = /var
 exclude = /var/lock
 exclude = /var/run
 exclude = /var/cache
